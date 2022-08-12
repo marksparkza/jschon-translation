@@ -1,0 +1,10 @@
+[run]
+source = jschon_translation
+branch = True
+
+[report]
+exclude_lines =
+    pragma: no cover
+    return NotImplemented
+    raise NotImplementedError
+    raise TypeError

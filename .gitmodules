@@ -1,0 +1,3 @@
+[submodule "json-translation-vocabulary"]
+	path = json-translation-vocabulary
+	url = https://github.com/marksparkza/json-translation-vocabulary
