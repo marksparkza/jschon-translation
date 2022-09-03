@@ -147,13 +147,13 @@ class TranslationResult(Result):
             self.add_translation_patch(scheme, object_path, {})
 
 
-@output_formatter
-def patch(result: Result, scheme: str, ignore_validity: bool = False) -> JSONCompatible:
+@output_formatter('translation-patch')
+def _translation_patch(result: Result, scheme: str, ignore_validity: bool = False) -> JSONCompatible:
     return JSONPatch(*_visit(result, scheme, ignore_validity)).aslist()
 
 
-@output_formatter
-def translation(result: Result, scheme: str, ignore_validity: bool = False) -> JSONCompatible:
+@output_formatter('translation')
+def _translation(result: Result, scheme: str, ignore_validity: bool = False) -> JSONCompatible:
     return JSONPatch(*_visit(result, scheme, ignore_validity)).evaluate(None)
 
 

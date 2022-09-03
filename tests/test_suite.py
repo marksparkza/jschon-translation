@@ -40,6 +40,6 @@ def test_translate_json(schema, data, patches, translations):
     result = schema.evaluate(data)
     assert result.valid
     for scheme, patch in patches.items():
-        assert result.output('patch', scheme=scheme) == patch
+        assert result.output('translation-patch', scheme=scheme) == patch
     for scheme, translation in translations.items():
         assert result.output('translation', scheme=scheme) == translation

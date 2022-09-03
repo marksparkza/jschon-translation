@@ -34,7 +34,7 @@ def test_translate_iso19115_to_datacite():
     assert output_schema.evaluate(output_json).valid
 
     result = input_schema.evaluate(input_json)
-    patch = result.output('patch', scheme='datacite')
+    patch = result.output('translation-patch', scheme='datacite')
     translation = result.output('translation', scheme='datacite')
 
     assert JSONPatch(*patch).evaluate(None) == translation
