@@ -35,16 +35,7 @@ def test_translate_iso19115_to_datacite():
 
     result = input_schema.evaluate(input_json)
     patch = result.output('translation-patch', scheme='datacite')
-    translation = result.output('translation', scheme='datacite')
-
+    translation = result.output('translation', scheme='datacite', clear_empties=False)
     assert JSONPatch(*patch).evaluate(None) == translation
-
-    # work in progress
-    # assert translation == output_json
-    assert translation.keys() == output_json.keys()
-    for k in translation:
-        if k == 'contributors':
-            # todo: resolve leftover empty arrays/objects when there are
-            #  no source values to fill them
-            continue
-        assert translation[k] == output_json[k]
+    translation = result.output('translation', scheme='datacite', clear_empties=True)
+    assert translation == output_json

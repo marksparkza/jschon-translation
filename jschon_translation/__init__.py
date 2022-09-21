@@ -148,13 +148,41 @@ class TranslationResult(Result):
 
 
 @output_formatter('translation-patch')
-def translation_patch(result: Result, scheme: str, ignore_validity: bool = False) -> JSONCompatible:
+def translation_patch(
+        result: Result,
+        scheme: str,
+        ignore_validity: bool = False,
+) -> JSONCompatible:
+    """Output formatter for the ``translation-patch`` output format.
+
+    :param result: Evaluation result.
+    :param scheme: Translation scheme.
+    :param ignore_validity: True to ignore the validity of the result.
+    :return: A translation patch (list of JSON patch operation dicts).
+    """
     return JSONPatch(*_visit(result, scheme, ignore_validity)).aslist()
 
 
 @output_formatter('translation')
-def translation(result: Result, scheme: str, ignore_validity: bool = False) -> JSONCompatible:
-    return JSONPatch(*_visit(result, scheme, ignore_validity)).evaluate(None)
+def translation(
+        result: Result,
+        scheme: str,
+        ignore_validity: bool = False,
+        clear_empties: bool = False,
+) -> JSONCompatible:
+    """Output formatter for the ``translation`` output format.
+
+    :param result: Evaluation result.
+    :param scheme: Translation scheme.
+    :param ignore_validity: True to ignore the validity of the result.
+    :param clear_empties: True to remove all empty strings, lists, dicts,
+        and nulls from the translated document.
+    :return: The translated document.
+    """
+    output = JSONPatch(*_visit(result, scheme, ignore_validity)).evaluate(None)
+    if clear_empties:
+        _clear_empties(output)
+    return output
 
 
 def _visit(node: Result, scheme: str, ignore_validity: bool) -> Iterator[JSONPatchOperation]:
@@ -166,3 +194,16 @@ def _visit(node: Result, scheme: str, ignore_validity: bool) -> Iterator[JSONPat
                 pass
         for child in node.children.values():
             yield from _visit(child, scheme, ignore_validity)
+
+
+def _clear_empties(node: JSONCompatible):
+    if isinstance(node, list):
+        for subnode in list(node):
+            _clear_empties(subnode)
+            if isinstance(subnode, (type(None), str, list, dict)) and not subnode:
+                node.remove(subnode)
+    elif isinstance(node, dict):
+        for key in dict(node):
+            _clear_empties(subnode := node[key])
+            if isinstance(subnode, (type(None), str, list, dict)) and not subnode:
+                del node[key]
