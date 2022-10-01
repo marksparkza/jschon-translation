@@ -40,7 +40,7 @@ class TranslationsKeyword(Keyword, ApplicatorMixin):
             key=key,
             itemclass=JSONTranslationSchema,
             catalog=parentschema.catalog,
-            session=parentschema.session,
+            cacheid=parentschema.cacheid,
         )
 
     def evaluate(self, instance: JSON, result: Result) -> None:
@@ -150,7 +150,7 @@ class T9nArrayKeyword(Keyword, ApplicatorMixin):
             parent=parentschema,
             key=key,
             catalog=parentschema.catalog,
-            session=parentschema.session,
+            cacheid=parentschema.cacheid,
             scheme=parentschema.t9n_scheme,
         )
 
@@ -194,7 +194,7 @@ class T9nObjectKeyword(Keyword, ApplicatorMixin):
             key=key,
             itemclass=JSONTranslationSchema,
             catalog=parentschema.catalog,
-            session=parentschema.session,
+            cacheid=parentschema.cacheid,
             scheme=parentschema.t9n_scheme,
         )
 
