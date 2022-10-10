@@ -5,7 +5,7 @@ from jschon import JSON, JSONSchema
 from jschon.jsonpatch import JSONPatch
 from jschon.utils import json_loadf
 
-testsuite_dir = pathlib.Path(__file__).parent.parent / 'json-translation-vocabulary' / 'tests'
+testsuite_dir = pathlib.Path(__file__).parent.parent / 'jschon_translation' / 'json-translation-vocabulary' / 'tests'
 
 
 def pytest_generate_tests(metafunc):

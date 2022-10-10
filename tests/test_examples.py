@@ -6,7 +6,7 @@ from jschon import JSON, JSONSchema
 from jschon.jsonpatch import JSONPatch
 from jschon_translation import translation_filter
 
-examples_dir = pathlib.Path(__file__).parent.parent / 'json-translation-vocabulary' / 'examples'
+examples_dir = pathlib.Path(__file__).parent.parent / 'jschon_translation' / 'json-translation-vocabulary' / 'examples'
 
 
 @translation_filter('date-to-year')

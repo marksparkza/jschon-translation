@@ -9,7 +9,7 @@ from jschon_translation.vocab import *
 def initialize(catalog: Catalog):
     catalog.add_uri_source(
         URI('https://jschon.dev/ext/translation/'),
-        LocalSource(pathlib.Path(__file__).parent.parent / 'json-translation-vocabulary', suffix='.json'),
+        LocalSource(pathlib.Path(__file__).parent / 'json-translation-vocabulary', suffix='.json'),
     )
 
     catalog.create_vocabulary(
