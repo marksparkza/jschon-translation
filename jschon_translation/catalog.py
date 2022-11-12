@@ -8,12 +8,12 @@ from jschon_translation.vocab import *
 
 def initialize(catalog: Catalog):
     catalog.add_uri_source(
-        URI('https://jschon.dev/ext/translation/'),
+        URI('https://jschon.dev/meta/translation/'),
         LocalSource(pathlib.Path(__file__).parent / 'json-translation-vocabulary', suffix='.json'),
     )
 
     catalog.create_vocabulary(
-        URI('https://jschon.dev/ext/translation'),
+        URI('https://jschon.dev/vocab/translation'),
         TranslationsKeyword,
         T9nSchemeKeyword,
         T9nTargetKeyword,
@@ -29,7 +29,7 @@ def initialize(catalog: Catalog):
     )
 
     catalog.create_metaschema(
-        URI('https://jschon.dev/ext/translation/schema'),
+        URI('https://jschon.dev/meta/translation/schema'),
         URI("https://json-schema.org/draft/2020-12/vocab/core"),
         URI("https://json-schema.org/draft/2020-12/vocab/applicator"),
         URI("https://json-schema.org/draft/2020-12/vocab/unevaluated"),
@@ -37,5 +37,5 @@ def initialize(catalog: Catalog):
         URI("https://json-schema.org/draft/2020-12/vocab/format-annotation"),
         URI("https://json-schema.org/draft/2020-12/vocab/meta-data"),
         URI("https://json-schema.org/draft/2020-12/vocab/content"),
-        URI("https://jschon.dev/ext/translation"),
+        URI("https://jschon.dev/vocab/translation"),
     )
