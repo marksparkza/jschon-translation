@@ -1,4 +1,5 @@
 import pathlib
+
 import pytest
 
 from jschon import JSON, JSONSchema

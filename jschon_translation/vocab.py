@@ -4,8 +4,7 @@ from jschon.exceptions import JSONSchemaError
 from jschon.json import JSON, JSONCompatible
 from jschon.jsonpointer import JSONPointer, RelativeJSONPointer
 from jschon.jsonschema import JSONSchema, Result
-from jschon.vocabulary import Applicator, ApplicatorMixin, Keyword
-
+from jschon.vocabulary import Keyword, Subschema, SubschemaMixin
 from jschon_translation import JSONTranslationSchema, TranslationResult
 
 __all__ = [
@@ -24,7 +23,7 @@ __all__ = [
 ]
 
 
-class TranslationsKeyword(Keyword, ApplicatorMixin):
+class TranslationsKeyword(Keyword, SubschemaMixin):
     key = "translations"
 
     @classmethod
@@ -40,7 +39,7 @@ class TranslationsKeyword(Keyword, ApplicatorMixin):
             key=key,
             itemclass=JSONTranslationSchema,
             catalog=parentschema.catalog,
-            session=parentschema.session,
+            cacheid=parentschema.cacheid,
         )
 
     def evaluate(self, instance: JSON, result: Result) -> None:
@@ -65,7 +64,7 @@ class T9nTargetKeyword(Keyword):
         result.parent.t9n_target = JSONPointer(self.json.value)
 
 
-class T9nConditionKeyword(Keyword, Applicator):
+class T9nConditionKeyword(Keyword, Subschema):
     key = "t9nCondition"
 
     def evaluate(self, instance: JSON, result: TranslationResult) -> None:
@@ -130,7 +129,7 @@ class T9nCastKeyword(Keyword):
         parentschema.t9n_cast = value
 
 
-class T9nArrayKeyword(Keyword, ApplicatorMixin):
+class T9nArrayKeyword(Keyword, SubschemaMixin):
     key = "t9nArray"
     depends_on = "t9nCondition",
 
@@ -150,7 +149,7 @@ class T9nArrayKeyword(Keyword, ApplicatorMixin):
             parent=parentschema,
             key=key,
             catalog=parentschema.catalog,
-            session=parentschema.session,
+            cacheid=parentschema.cacheid,
             scheme=parentschema.t9n_scheme,
         )
 
@@ -173,7 +172,7 @@ class T9nArrayKeyword(Keyword, ApplicatorMixin):
             self.json.evaluate(instance, result)
 
 
-class T9nObjectKeyword(Keyword, ApplicatorMixin):
+class T9nObjectKeyword(Keyword, SubschemaMixin):
     key = "t9nObject"
     depends_on = "t9nCondition",
 
@@ -194,7 +193,7 @@ class T9nObjectKeyword(Keyword, ApplicatorMixin):
             key=key,
             itemclass=JSONTranslationSchema,
             catalog=parentschema.catalog,
-            session=parentschema.session,
+            cacheid=parentschema.cacheid,
             scheme=parentschema.t9n_scheme,
         )
 

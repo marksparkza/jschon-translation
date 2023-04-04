@@ -2,7 +2,6 @@ import pathlib
 
 from jschon.catalog import Catalog, LocalSource
 from jschon.uri import URI
-
 from jschon_translation.vocab import *
 
 
