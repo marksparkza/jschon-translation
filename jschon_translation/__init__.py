@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Callable, Dict, Iterator, List, Optional, Tuple, Union
 
-from jschon.exceptions import RelativeJSONPointerError
+from jschon.exc import RelativeJSONPointerReferenceError
 from jschon.json import JSON, JSONCompatible
 from jschon.jsonpatch import JSONPatch, JSONPatchOperation, PatchOp
 from jschon.jsonpointer import JSONPointer, RelativeJSONPointer
@@ -43,7 +43,7 @@ class JSONTranslationSchema(JSONSchema):
         if self.t9n_source is not None:
             try:
                 source = self.t9n_source.evaluate(instance)
-            except RelativeJSONPointerError:
+            except RelativeJSONPointerReferenceError:
                 return result
         else:
             source = instance
@@ -58,7 +58,7 @@ class JSONTranslationSchema(JSONSchema):
                 for item in self.t9n_concat:
                     try:
                         value += [self._make_value(item.evaluate(source))]
-                    except RelativeJSONPointerError:
+                    except RelativeJSONPointerReferenceError:
                         pass
                 if value:
                     value = self.t9n_sep.join(str(v) for v in value)

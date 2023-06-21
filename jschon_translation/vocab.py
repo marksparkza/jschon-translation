@@ -1,6 +1,6 @@
 from typing import Mapping, Optional, Sequence
 
-from jschon.exceptions import JSONSchemaError
+from jschon.exc import JSONSchemaError
 from jschon.json import JSON, JSONCompatible
 from jschon.jsonpointer import JSONPointer, RelativeJSONPointer
 from jschon.jsonschema import JSONSchema, Result
