@@ -14,6 +14,7 @@ __all__ = [
     'TranslationResult',
     'TranslationFilter',
     'translation_filter',
+    'remove_empty_children',
 ]
 
 
@@ -181,7 +182,7 @@ def translation(
     """
     output = JSONPatch(*_visit(result, scheme, ignore_validity)).evaluate(None)
     if clear_empties:
-        _clear_empties(output)
+        remove_empty_children(output)
     return output
 
 
@@ -196,14 +197,15 @@ def _visit(node: Result, scheme: str, ignore_validity: bool) -> Iterator[JSONPat
             yield from _visit(child, scheme, ignore_validity)
 
 
-def _clear_empties(node: JSONCompatible):
+def remove_empty_children(node: JSONCompatible):
+    """Remove empty child nodes, in-place, recursively."""
     if isinstance(node, list):
         for subnode in list(node):
-            _clear_empties(subnode)
+            remove_empty_children(subnode)
             if isinstance(subnode, (type(None), str, list, dict)) and not subnode:
                 node.remove(subnode)
     elif isinstance(node, dict):
         for key in dict(node):
-            _clear_empties(subnode := node[key])
+            remove_empty_children(subnode := node[key])
             if isinstance(subnode, (type(None), str, list, dict)) and not subnode:
                 del node[key]
