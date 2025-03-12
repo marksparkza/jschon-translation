@@ -110,8 +110,22 @@ def translation_filter(name: str = None):
 class TranslationResult(Result):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        self.t9n_target: Optional[JSONPointer] = None
+        self._t9n_target: Optional[JSONPointer] = None
         self.t9n_patchops: Optional[Dict[str, List[JSONPatchOperation]]] = None
+
+    @property
+    def t9n_target(self):
+        """Infer "t9nTarget" from the parent translation schema if omitted.
+        This allows delegation of translations to referenced schemas, with
+        targets made relative to the parent."""
+        if self._t9n_target is not None:
+            return self._t9n_target
+        if self.parent is not None:
+            return self.parent.t9n_target
+
+    @t9n_target.setter
+    def t9n_target(self, value):
+        self._t9n_target = value
 
     def add_translation_patch(
             self,
