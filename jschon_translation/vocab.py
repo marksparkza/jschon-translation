@@ -43,9 +43,21 @@ class TranslationsKeyword(Keyword, SubschemaMixin):
         )
 
     def evaluate(self, instance: JSON, result: Result) -> None:
+        # If a t9n_scheme is set higher up in the evaluation tree,
+        # it means we're in a delegated translation and should only
+        # evaluate translation schemas with a matching scheme.
+        parent_scheme = None
+        parent = result
+        while parent is not None:
+            if hasattr(parent.schema, 't9n_scheme'):
+                parent_scheme = parent.schema.t9n_scheme
+                break
+            parent = parent.parent
+
         for index, subschema in enumerate(self.json):
-            with result(instance, str(index), cls=TranslationResult) as subresult:
-                subschema.evaluate(instance, subresult)
+            if parent_scheme is None or subschema.t9n_scheme == parent_scheme:
+                with result(instance, str(index), cls=TranslationResult) as subresult:
+                    subschema.evaluate(instance, subresult)
 
 
 class T9nSchemeKeyword(Keyword):
