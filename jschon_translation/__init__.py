@@ -121,7 +121,7 @@ class TranslationResult(Result):
         if self._t9n_target is not None:
             return self._t9n_target
         if self.parent is not None:
-            return self.parent.t9n_target
+            return getattr(self.parent, 't9n_target', JSONPointer())
 
     @t9n_target.setter
     def t9n_target(self, value):
